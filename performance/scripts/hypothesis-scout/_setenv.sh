@@ -33,14 +33,6 @@ export USERS=1
 # A hatch rate (number of users to spawn per second).
 export USER_HATCH_RATE=1
 
-# A name of the property file with username=password list of users to be logged in
-#export USERS_PROPERTIES_FILE=osioperftest.users.properties
-
-# A file where USER_TOKENS environmental variable is supposed to be set.
-# This file is copied to locust master/slaves to be sources by BASH before executing the locust itself.
-# So the locust process get's passed the USER_TOKENS variable.
-export ENV_FILE=/tmp/osioperftest.users.env
-
 # 'true' if a report will be sent to a Zabbix instance
 export ZABBIX_REPORT_ENABLED=false
 
