@@ -1,0 +1,94 @@
+- job:
+    name: 'hypothesis-scout'
+    project-type: freestyle
+    node: osioperf-server-1-centos7-x86_64
+    properties:
+       - ownership:
+           owner: pmacik
+       - authorization:
+           anonymous:
+               - job-read
+               - job-discover
+       - build-discarder:
+           days-to-keep: 28
+    parameters:
+       - choice:
+           name: SERVER_SCHEME
+           choices:
+               - 'https'
+               - 'http'
+           description: Auth server HTTP scheme.
+       - string:
+           name: SERVER_HOST
+           default: hypothesis.prod-preview.openshift.io
+           description: Auth server machine address.
+       - string:
+           name: SSH_USER
+           default: centos
+           description: 'Locust SSH user'
+       - string:
+           name: SSH_WORKDIR
+           default: /home/centos
+           description: 'Locust SSH workdir'
+       - string:
+           name: MASTER_HOST
+           default: osioperf-server-2
+           description: 'Locust MASTER node'
+       - string:
+           name: USERS
+           default: '100'
+           description: A number of users to swawn.
+       - string:
+           name: USER_HATCH_RATE
+           default: '10'
+           description: A hatch rate (number of users to spawn per second).
+       - string:
+           name: DURATION
+           default: '300'
+           description: A number of seconds for how long the load test should run.
+       - bool:
+           name: ZABBIX_REPORT_ENABLED
+           default: true
+           description: Checked if a report is to be sent to the Zabbix instance.
+       - string:
+           name: ZABBIX_SERVER
+           default: zabbix.devshift.net
+           description: An address of Zabbix server
+       - string:
+           name: ZABBIX_PORT
+           default: '10051'
+           description: A port of Zabbix server used by zabbix_sender utility
+       - string:
+           name: ZABBIX_HOST
+           default: hypothesis.prod-preview
+           description: A hostname in Zabbix the report is for
+    scm:
+        - git:
+            url: https://github.com/fabric8-hdd/supervisor.git
+            branches:
+                - '*/master'
+    triggers:
+        - timed: H/30 * * * *
+    wrappers:
+        - workspace-cleanup:
+            dirmatch: false
+        - credentials-binding:
+            - file:
+                credential-id: pmacik-osioperftestX.users.properties
+                variable: USERS_PROPERTIES_FILE
+            - username-password-separated:
+                credential-id: grip-creds
+                username: GRIP_USER
+                password: GRIP_PASS
+    builders:
+        - shell: |-
+            cd performance/scripts/$JOB_BASE_NAME
+            ./run.sh
+    concurrent: false
+    description: null
+    disabled: false
+    publishers:
+       - archive:
+           artifacts: '**/*.log,**/*.png,**/*.csv,**/*.html'
+           allow-empty: 'true'
+           fingerprint: true
