@@ -73,9 +73,6 @@
         - workspace-cleanup:
             dirmatch: false
         - credentials-binding:
-            - file:
-                credential-id: pmacik-osioperftestX.users.properties
-                variable: USERS_PROPERTIES_FILE
             - username-password-separated:
                 credential-id: grip-creds
                 username: GRIP_USER

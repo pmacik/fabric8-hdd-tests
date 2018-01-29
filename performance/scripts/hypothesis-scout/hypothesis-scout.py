@@ -46,7 +46,7 @@ class ScoutTaskSet(TaskSet):
 
     @task(3)
     def pushmetric_light_payload(self):
-		self.__pushmetric({ "hello": "world" }, "pushmetric__light_payload")
+		self.__pushmetric({ "hello": "world" }, "pushmetric_light_payload")
 
     @task(3)
     def pushmetric_med_payload(self):

@@ -41,9 +41,9 @@ for c in $(find *.csv | grep '_distribution.csv'); do echo $c; $COMMON/_csv-rt-h
 
 echo " Prepare results for Zabbix"
 rm -rvf *-zabbix.log
-./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_light_payload"' "pushmetric__light_payload"
-./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_med_payload"' "pushmetric__light_payload"
-./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_heavy_payload"' "pushmetric__light_payload"
+./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_light_payload"' "pushmetric_light_payload"
+./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_med_payload"' "pushmetric_med_payload"
+./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_heavy_payload"' "pushmetric_heavy_payload"
 
 ZABBIX_LOG=$JOB_BASE_NAME-$BUILD_NUMBER-zabbix.log
 if [[ "$ZABBIX_REPORT_ENABLED" = "true" ]]; then
