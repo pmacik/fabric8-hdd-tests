@@ -13,24 +13,35 @@ fi
 echo " Prepare locustfile template"
 ./_prepare-locustfile.sh hypothesis-scout.py
 
-echo " Shut Locust master down"
-$COMMON/__stop-locust-master.sh
+if [ "$RUN_LOCALLY" != "true" ]; then
+	echo " Shut Locust master down"
+	$COMMON/__stop-locust-master.sh
 
-echo " Start Locust master waiting for slaves"
-$COMMON/__start-locust-master.sh
+	echo " Start Locust master waiting for slaves"
+	$COMMON/__start-locust-master.sh
+else
+	echo " Shut Locust master down"
+	$COMMON/__stop-locust-master-standalone.sh
+	echo " Run Locust locally"
+	$COMMON/__start-locust-master-standalone.sh
+fi
 
 echo " Run test for $DURATION seconds"
 sleep $DURATION
 
-echo " Shut Locust master down"
-$COMMON/__stop-locust-master.sh TERM
+if [ "$RUN_LOCALLY" != "true" ]; then
+	echo " Shut Locust master down"
+	$COMMON/__stop-locust-master.sh TERM
 
-echo " Download locust reports from Locust master"
-$COMMON/_gather-locust-reports.sh
+	echo " Download locust reports from Locust master"
+	$COMMON/_gather-locust-reports.sh
+else
+	$COMMON/__stop-locust-master-standalone.sh TERM
+fi
 
 echo " Extract CSV data from logs"
 $COMMON/_locust-log-to-csv.sh 'POST pushmetric_light_payload' $JOB_BASE_NAME-$BUILD_NUMBER-locust-master.log
-$COMMON/_locust-log-to-csv.sh 'POST pushmetric_med_payload' $JOB_BASE_NAME-$BUILD_NUMBER-locust-master.log
+#$COMMON/_locust-log-to-csv.sh 'POST pushmetric_med_payload' $JOB_BASE_NAME-$BUILD_NUMBER-locust-master.log
 $COMMON/_locust-log-to-csv.sh 'POST pushmetric_heavy_payload' $JOB_BASE_NAME-$BUILD_NUMBER-locust-master.log
 
 echo " Generate charts from CSV"
@@ -41,9 +52,9 @@ for c in $(find *.csv | grep '_distribution.csv'); do echo $c; $COMMON/_csv-rt-h
 
 echo " Prepare results for Zabbix"
 rm -rvf *-zabbix.log
-./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_light_payload"' "pushmetric__light_payload"
-./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_med_payload"' "pushmetric__light_payload"
-./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_heavy_payload"' "pushmetric__light_payload"
+./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_light_payload"' "pushmetric_light_payload"
+#./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_med_payload"' "pushmetric_med_payload"
+./_zabbix-process-results.sh $JOB_BASE_NAME-$BUILD_NUMBER-report_requests.csv '"POST","pushmetric_heavy_payload"' "pushmetric_heavy_payload"
 
 ZABBIX_LOG=$JOB_BASE_NAME-$BUILD_NUMBER-zabbix.log
 if [[ "$ZABBIX_REPORT_ENABLED" = "true" ]]; then
@@ -67,11 +78,11 @@ filterZabbixValue $ZABBIX_LOG "pushmetric_light_payload-rt_max" "@@PUSHMETRIC_LI
 filterZabbixValue $ZABBIX_LOG "pushmetric_light_payload-rt_average" "@@PUSHMETRIC_LIGHT_PAYLOAD_AVERAGE@@" $RESULTS_FILE;
 filterZabbixValue $ZABBIX_LOG "pushmetric_light_payload-failed" "@@PUSHMETRIC_LIGHT_PAYLOAD_FAILED@@" $RESULTS_FILE;
 
-filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-rt_min" "@@PUSHMETRIC_MED_PAYLOAD_MIN@@" $RESULTS_FILE;
-filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-rt_median" "@@PUSHMETRIC_MED_PAYLOAD_MEDIAN@@" $RESULTS_FILE;
-filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-rt_max" "@@PUSHMETRIC_MED_PAYLOAD_MAX@@" $RESULTS_FILE;
-filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-rt_average" "@@PUSHMETRIC_MED_PAYLOAD_AVERAGE@@" $RESULTS_FILE;
-filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-failed" "@@PUSHMETRIC_MED_PAYLOAD_FAILED@@" $RESULTS_FILE;
+#filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-rt_min" "@@PUSHMETRIC_MED_PAYLOAD_MIN@@" $RESULTS_FILE;
+#filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-rt_median" "@@PUSHMETRIC_MED_PAYLOAD_MEDIAN@@" $RESULTS_FILE;
+#filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-rt_max" "@@PUSHMETRIC_MED_PAYLOAD_MAX@@" $RESULTS_FILE;
+#filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-rt_average" "@@PUSHMETRIC_MED_PAYLOAD_AVERAGE@@" $RESULTS_FILE;
+#filterZabbixValue $ZABBIX_LOG "pushmetric_med_payload-failed" "@@PUSHMETRIC_MED_PAYLOAD_FAILED@@" $RESULTS_FILE;
 
 filterZabbixValue $ZABBIX_LOG "pushmetric_heavy_payload-rt_min" "@@PUSHMETRIC_HEAVY_PAYLOAD_MIN@@" $RESULTS_FILE;
 filterZabbixValue $ZABBIX_LOG "pushmetric_heavy_payload-rt_median" "@@PUSHMETRIC_HEAVY_PAYLOAD_MEDIAN@@" $RESULTS_FILE;

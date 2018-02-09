@@ -20,7 +20,7 @@
            description: Auth server HTTP scheme.
        - string:
            name: SERVER_HOST
-           default: hypothesis.prod-preview.openshift.io
+           default: measurement-fabric8-hypothesis-measurement-api.dev.rdu2c.fabric8.io/measurement
            description: Auth server machine address.
        - string:
            name: SSH_USER
@@ -36,11 +36,11 @@
            description: 'Locust MASTER node'
        - string:
            name: USERS
-           default: '100'
+           default: '1'
            description: A number of users to swawn.
        - string:
            name: USER_HATCH_RATE
-           default: '10'
+           default: '1'
            description: A hatch rate (number of users to spawn per second).
        - string:
            name: DURATION
@@ -48,7 +48,7 @@
            description: A number of seconds for how long the load test should run.
        - bool:
            name: ZABBIX_REPORT_ENABLED
-           default: true
+           default: false
            description: Checked if a report is to be sent to the Zabbix instance.
        - string:
            name: ZABBIX_SERVER
@@ -60,22 +60,19 @@
            description: A port of Zabbix server used by zabbix_sender utility
        - string:
            name: ZABBIX_HOST
-           default: hypothesis.prod-preview
+           default: hdd-measurement-api.dev
            description: A hostname in Zabbix the report is for
     scm:
         - git:
-            url: https://github.com/fabric8-hdd/supervisor.git
+            url: https://github.com/pmacik/fabric8-hdd-tests
             branches:
                 - '*/master'
-    triggers:
-        - timed: H/30 * * * *
+#    triggers:
+#        - timed: H/30 * * * *
     wrappers:
         - workspace-cleanup:
             dirmatch: false
         - credentials-binding:
-            - file:
-                credential-id: pmacik-osioperftestX.users.properties
-                variable: USERS_PROPERTIES_FILE
             - username-password-separated:
                 credential-id: grip-creds
                 username: GRIP_USER
