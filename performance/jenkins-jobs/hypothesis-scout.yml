@@ -15,13 +15,13 @@
        - choice:
            name: SERVER_SCHEME
            choices:
-               - 'https'
                - 'http'
-           description: Auth server HTTP scheme.
+               - 'https'
+           description: HDD server HTTP scheme.
        - string:
            name: SERVER_HOST
            default: measurement-fabric8-hypothesis-measurement-api.dev.rdu2c.fabric8.io/measurement
-           description: Auth server machine address.
+           description: HDD server machine address.
        - string:
            name: SSH_USER
            default: centos
@@ -37,7 +37,7 @@
        - string:
            name: USERS
            default: '1'
-           description: A number of users to swawn.
+           description: A number of users to spawn.
        - string:
            name: USER_HATCH_RATE
            default: '1'
