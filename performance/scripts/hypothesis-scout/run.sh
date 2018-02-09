@@ -13,20 +13,31 @@ fi
 echo " Prepare locustfile template"
 ./_prepare-locustfile.sh hypothesis-scout.py
 
-echo " Shut Locust master down"
-$COMMON/__stop-locust-master.sh
+if [ "$RUN_LOCALLY" != "true" ]; then
+	echo " Shut Locust master down"
+	$COMMON/__stop-locust-master.sh
 
-echo " Start Locust master waiting for slaves"
-$COMMON/__start-locust-master.sh
+	echo " Start Locust master waiting for slaves"
+	$COMMON/__start-locust-master.sh
+else
+	echo " Shut Locust master down"
+	$COMMON/__stop-locust-master-standalone.sh
+	echo " Run Locust locally"
+	$COMMON/__start-locust-master-standalone.sh
+fi
 
 echo " Run test for $DURATION seconds"
 sleep $DURATION
 
-echo " Shut Locust master down"
-$COMMON/__stop-locust-master.sh TERM
+if [ "$RUN_LOCALLY" != "true" ]; then
+	echo " Shut Locust master down"
+	$COMMON/__stop-locust-master.sh TERM
 
-echo " Download locust reports from Locust master"
-$COMMON/_gather-locust-reports.sh
+	echo " Download locust reports from Locust master"
+	$COMMON/_gather-locust-reports.sh
+else
+	$COMMON/__stop-locust-master-standalone.sh TERM
+fi
 
 echo " Extract CSV data from logs"
 $COMMON/_locust-log-to-csv.sh 'POST pushmetric_light_payload' $JOB_BASE_NAME-$BUILD_NUMBER-locust-master.log
