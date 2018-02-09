@@ -42,6 +42,10 @@
            name: USER_HATCH_RATE
            default: '1'
            description: A hatch rate (number of users to spawn per second).
+       - bool:
+           name: RUN_LOCALLY
+           default: 'true'
+           description: '"true" if locust test is to be run locally (i.e. no master, no slaves, no remote execution).'
        - string:
            name: DURATION
            default: '300'
