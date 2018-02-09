@@ -10,7 +10,7 @@ export BUILD_NUMBER=0
 export SERVER_SCHEME=http
 
 # supervisor server machine address.
-export SERVER_HOST=http://measurement-fabric8-hypothesis-measurement-api.dev.rdu2c.fabric8.io/measurement
+export SERVER_HOST=measurement-fabric8-hypothesis-measurement-api.dev.rdu2c.fabric8.io/measurement
 
 # Locust SSH user
 export SSH_USER=centos
