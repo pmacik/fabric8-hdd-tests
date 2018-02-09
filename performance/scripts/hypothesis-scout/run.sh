@@ -13,6 +13,8 @@ fi
 echo " Prepare locustfile template"
 ./_prepare-locustfile.sh hypothesis-scout.py
 
+touch $ENV_FILE-master
+
 if [ "$RUN_LOCALLY" != "true" ]; then
 	echo " Shut Locust master down"
 	$COMMON/__stop-locust-master.sh
@@ -48,7 +50,21 @@ echo " Generate charts from CSV"
 export REPORT_CHART_WIDTH=1000
 export REPORT_CHART_HEIGHT=600
 for c in $(find *.csv | grep '\-POST_\+\|\-GET_\+'); do echo $c; $COMMON/_csv-response-time-to-png.sh $c; $COMMON/_csv-throughput-to-png.sh $c; $COMMON/_csv-failures-to-png.sh $c; done
-for c in $(find *.csv | grep '_distribution.csv'); do echo $c; $COMMON/_csv-rt-histogram-to-png.sh $c; done
+function distribution_2_csv {
+	HEAD=(`cat $1 | head -n 1 | sed -e 's,",,g' | sed -e 's, ,_,g' | sed -e 's,%,,g' | tr "," " "`)
+	DATA=(`cat $1 | grep -F "$2" | sed -e 's,",,g' | sed -e 's, ,_,g' | tr "," " "`)
+	NAME=`echo $1 | sed -e 's,-report_distribution,,g' | sed -e 's,\.csv,,g'`-`echo "$2" | sed -e 's,",,g' | sed -e 's, ,_,g;'`
+
+	rm -rf $NAME-rt-histo.csv;
+	for i in $(seq 2 $(( ${#HEAD[*]} - 1 )) ); do
+		echo "${HEAD[$i]};${DATA[$i]}" >> $NAME-rt-histo.csv;
+	done;
+}
+for c in $(find *.csv | grep '\-report_distribution.csv'); do
+	distribution_2_csv $c '"POST pushmetric_light_payload"';
+	distribution_2_csv $c '"POST pushmetric_heavy_payload"';
+done
+for c in $(find *rt-histo.csv); do echo $c; $COMMON/_csv-rt-histogram-to-png.sh $c; done
 
 echo " Prepare results for Zabbix"
 rm -rvf *-zabbix.log

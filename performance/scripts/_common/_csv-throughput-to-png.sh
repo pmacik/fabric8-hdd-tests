@@ -14,5 +14,5 @@ set datafile separator ";"
 set xlabel "Time [s]"
 set ylabel "req/s"
 set grid
-plot "$1" u 1:8 t "Average"
+plot "$1" u 1:8 w linespoints t "Average"
 eor

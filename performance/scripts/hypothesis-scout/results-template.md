@@ -30,6 +30,7 @@ That is the reason for the values of the maximals always go up.
 ![pushmetric_light_payload-median-reponse-time](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_light_payload-median-response-time.png)
 ![pushmetric_light_payload-maximal-reponse-time](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_light_payload-maximal-response-time.png)
 ![pushmetric_light_payload-average-reponse-time](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_light_payload-average-response-time.png)
+![pushmetric_light_payload-rt-histo](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_light_payload-rt-histo.png)
 #### `pushmetric_light_payload` Failures
 ![pushmetric_light_payload-failures](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_light_payload-failures.png)
 #### `pushmetric_heavy_payload` Response Time
@@ -38,5 +39,6 @@ That is the reason for the values of the maximals always go up.
 ![pushmetric_heavy_payload-median-reponse-time](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_heavy_payload-median-response-time.png)
 ![pushmetric_heavy_payload-maximal-reponse-time](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_heavy_payload-maximal-response-time.png)
 ![pushmetric_heavy_payload-average-reponse-time](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_heavy_payload-average-response-time.png)
+![pushmetric_heavy_payload-rt-histo](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_heavy_payload-rt-histo.png)
 #### `pushmetric_heavy_payload` Failures
 ![pushmetric_heavy_payload-failures](./@@JOB_BASE_NAME@@-@@BUILD_NUMBER@@-POST_pushmetric_heavy_payload-failures.png)

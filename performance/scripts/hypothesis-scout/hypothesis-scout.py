@@ -34,7 +34,7 @@ class ScoutTaskSet(TaskSet):
 			response.failure("Got wrong response EXCEPTIONN!: [" + content + "]")
 
 	@task(10)
-		def pushmetric_light_payload(self):
+	def pushmetric_light_payload(self):
 		self.__pushmetric({ "hello": "world" }, "pushmetric_light_payload")
 
 	@task(10)
@@ -45,4 +45,4 @@ class MyLocust(HttpLocust):
 	task_set = ScoutTaskSet
 	host = serverScheme + "://" + serverHost
 	min_wait=1000
-	max_wait=10000
+	max_wait=1000

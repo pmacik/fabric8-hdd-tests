@@ -14,7 +14,7 @@ set datafile separator ";"
 set xlabel "Time [s]"
 set ylabel "ms"
 set grid
-plot "$1" u 1:4 t "Average", "$1" u 1:5 t "Min", "$1" u 1:6 t "Max", "$1" u 1:7 t "Median"
+plot "$1" u 1:4 w linespoints t "Average", "$1" u 1:5 w linespoints t "Min", "$1" u 1:6 w linespoints t "Max", "$1" u 1:7 w linespoints t "Median"
 eor
 
 gnuplot << eor
@@ -27,7 +27,7 @@ set datafile separator ";"
 set xlabel "Time [s]"
 set ylabel "ms"
 set grid
-plot "$1" u 1:5 t "Min"
+plot "$1" u 1:5 w linespoints t "Min"
 eor
 
 gnuplot << eor
@@ -39,7 +39,7 @@ set yrange [0:*]
 set datafile separator ";"
 set xlabel "Time [s]"
 set ylabel "ms"
-plot "$1" u 1:7 t "Median"
+plot "$1" u 1:7 w linespoints t "Median"
 eor
 
 gnuplot << eor
@@ -51,7 +51,7 @@ set yrange [0:*]
 set datafile separator ";"
 set xlabel "Time [s]"
 set ylabel "ms"
-plot "$1" u 1:6 t "Max"
+plot "$1" u 1:6 w linespoints t "Max"
 eor
 
 gnuplot << eor
@@ -63,5 +63,5 @@ set yrange [0:*]
 set datafile separator ";"
 set xlabel "Time [s]"
 set ylabel "ms"
-plot "$1" u 1:4 t "Average"
+plot "$1" u 1:4 w linespoints t "Average"
 eor

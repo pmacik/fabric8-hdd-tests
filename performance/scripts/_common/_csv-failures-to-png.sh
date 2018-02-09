@@ -14,5 +14,5 @@ set datafile separator ";"
 set xlabel "Time [s]"
 set ylabel "# of Failures"
 set grid
-plot "$1" u 1:3 t "# of failures"
+plot "$1" u 1:3 w linespoints t "# of failures"
 eor
