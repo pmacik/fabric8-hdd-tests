@@ -68,7 +68,7 @@
            description: A hostname in Zabbix the report is for
     scm:
         - git:
-            url: https://github.com/pmacik/fabric8-hdd-tests
+            url: https://github.com/fabric8-hdd/fabric8-hypothesis-tests
             branches:
                 - '*/master'
 #    triggers:
