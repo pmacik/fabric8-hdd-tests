@@ -36,11 +36,11 @@
            description: 'Locust MASTER node'
        - string:
            name: USERS
-           default: '1'
+           default: '500'
            description: A number of users to spawn.
        - string:
            name: USER_HATCH_RATE
-           default: '1'
+           default: '50'
            description: A hatch rate (number of users to spawn per second).
        - bool:
            name: RUN_LOCALLY
@@ -52,7 +52,7 @@
            description: A number of seconds for how long the load test should run.
        - bool:
            name: ZABBIX_REPORT_ENABLED
-           default: false
+           default: true
            description: Checked if a report is to be sent to the Zabbix instance.
        - string:
            name: ZABBIX_SERVER
