@@ -1,4 +1,4 @@
-##hypothesis-scout
+# `hypothesis-scout`
 
 Performance test script for the hypothesis-measurement-api.
 
