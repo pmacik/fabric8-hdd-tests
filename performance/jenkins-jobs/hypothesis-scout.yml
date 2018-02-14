@@ -4,7 +4,9 @@
     node: osioperf-server-1-centos7-x86_64
     properties:
        - ownership:
-           owner: pmacik
+           owner: dgaur
+           co-owners:
+               - pmacik
        - authorization:
            anonymous:
                - job-read
