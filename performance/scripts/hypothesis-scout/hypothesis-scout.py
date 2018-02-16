@@ -21,30 +21,28 @@ heavy_payload1 = {
 	}
 
 class ScoutTaskSet(TaskSet):
+	def __pushmetric(self, payload, name):
+		response = self.client.post("/api/v1.0/measurements", payload, name=name ,catch_response=True)
+		content = response.content
 
-    def __pushmetric(self, payload, name):
-        response = self.client.post("/api/v1.0/measurements", payload, name=name ,catch_response=True)
-    	content = response.content
-
-    	try:
+		try:
 			if not response.ok:
 				response.failure("Got wrong response: [" + content + "]")
 			else:
 				response.success()
-    	except ValueError:
+		except ValueError:
 			response.failure("Got wrong response EXCEPTIONN!: [" + content + "]")
 
-    @task(10)
-    def pushmetric_light_payload(self):
-		self.__pushmetric({ "hello": "world" }, "pushmetric__light_payload")
+	@task(10)
+	def pushmetric_light_payload(self):
+		self.__pushmetric({ "hello": "world" }, "pushmetric_light_payload")
 
-    @task(10)
-    def pushmetric_heavy_payload(self):
-        self.__pushmetric(heavy_payload1, "pushmetric_heavy_payload")
-
+	@task(10)
+	def pushmetric_heavy_payload(self):
+		self.__pushmetric(heavy_payload1, "pushmetric_heavy_payload")
 
 class MyLocust(HttpLocust):
-    task_set = ScoutTaskSet
-    host = serverScheme + "://" + serverHost
-    min_wait=1000
-    max_wait=10000
+	task_set = ScoutTaskSet
+	host = serverScheme + "://" + serverHost
+	min_wait=1000
+	max_wait=1000
