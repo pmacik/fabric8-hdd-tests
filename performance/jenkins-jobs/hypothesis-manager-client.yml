@@ -1,5 +1,5 @@
 - job:
-    name: 'hypothesis-scout'
+    name: 'hypothesis-manager-client'
     project-type: freestyle
     node: osioperf-server-1-centos7-x86_64
     properties:
