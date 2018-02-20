@@ -1,5 +1,5 @@
 - job:
-    name: 'hypothesis-scout'
+    name: 'hypothesis-manager-client'
     project-type: freestyle
     node: osioperf-server-1-centos7-x86_64
     properties:
@@ -23,7 +23,7 @@
            description: HDD server HTTP scheme.
        - string:
            name: SERVER_HOST
-           default: measurement-fabric8-hypothesis-measurement-api.dev.rdu2c.fabric8.io/measurement
+           default: osio-hypothesis-manager-api-hdd-preview.dev.rdu2c.fabric8.io/manager
            description: HDD server machine address.
        - string:
            name: SSH_USER
@@ -67,7 +67,7 @@
            description: A port of Zabbix server used by zabbix_sender utility
        - string:
            name: ZABBIX_HOST
-           default: hdd-measurement-api.dev
+           default: hdd-manager-api.dev
            description: A hostname in Zabbix the report is for
     scm:
         - git:
