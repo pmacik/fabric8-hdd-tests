@@ -1,7 +1,7 @@
 - job:
     name: 'hypothesis-manager-client'
     project-type: freestyle
-    node: osioperf-server-1-centos7-x86_64
+    node: osioperf-master1
     properties:
        - ownership:
            owner: dgaur
@@ -27,15 +27,15 @@
            description: HDD server machine address.
        - string:
            name: SSH_USER
-           default: centos
+           default: jenkins
            description: 'Locust SSH user'
        - string:
            name: SSH_WORKDIR
-           default: /home/centos
+           default: /var/lib/jenkins/osioperf
            description: 'Locust SSH workdir'
        - string:
            name: MASTER_HOST
-           default: osioperf-server-2
+           default: osioperf-master2
            description: 'Locust MASTER node'
        - string:
            name: USERS
